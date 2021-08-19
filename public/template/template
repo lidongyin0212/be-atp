@@ -1,0 +1,755 @@
+<!doctype html>
+{% verbatim %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试报告</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/chosen/1.8.2/chosen.css" rel="stylesheet">
+    <base target="_blank">
+        <style type="text/css">
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 100
+        }
+
+        h1 {
+            font-size: 30px
+        }
+
+        h2 {
+            font-size: 24px
+        }
+
+        h3 {
+            font-size: 16px
+        }
+
+        h4 {
+            font-size: 14px
+        }
+
+        h5 {
+            font-size: 12px
+        }
+
+        h6 {
+            font-size: 10px
+        }
+
+        h3, h4, h5 {
+            margin-top: 5px;
+            font-weight: 600
+        }
+
+        .gray-bg {
+            background-color: #f3f3f4
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #e7eaec !important
+        }
+
+        .white-bg {
+            background-color: #fff
+        }
+
+        .dashboard-header {
+            border-top: 0;
+            padding: 20px
+        }
+
+        .dashboard-header h2 {
+            margin-top: 10px;
+            font-size: 26px
+        }
+
+        .dashboard-header .list-group-item span.label {
+            margin-right: 10px
+        }
+
+        .wrapper {
+            padding: 0 20px
+        }
+
+        .wrapper-content {
+            padding: 20px
+        }
+
+        .ibox-tools {
+            display: inline-block;
+            float: right;
+            margin-top: 0;
+            position: relative;
+            padding: 0
+        }
+
+        .ibox-tools a {
+            cursor: pointer;
+            margin-left: 5px;
+            color: #c4c4c4
+        }
+
+        .ibox-tools a.btn-primary {
+            color: #fff
+        }
+
+        .ibox-tools .dropdown-menu > li > a {
+            padding: 4px 10px;
+            font-size: 12px
+        }
+
+        .ibox-content {
+            background-color: #fff;
+            color: inherit;
+            padding: 15px 20px 20px;
+            border-color: #e7eaec;
+            -webkit-border-image: none;
+            -o-border-image: none;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 1px 0
+        }
+
+        .ibox-content h1, .ibox-content h2, .ibox-content h3, .ibox-content h4, .ibox-content h5, .ibox-title h1, .ibox-title h2, .ibox-title h3, .ibox-title h4, .ibox-title h5 {
+            margin-top: 5px
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: #F5F5F5
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            background-color: #F5F5F5
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #999
+        }
+
+        .forum-icon .fa {
+            font-size: 30px;
+            margin-top: 8px;
+            color: #9b9b9b
+        }
+
+        .ibox-title {
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-top-colors: none;
+            background-color: #fff;
+            border-color: #e7eaec;
+            -webkit-border-image: none;
+            -o-border-image: none;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 4px 0 0;
+            color: inherit;
+            margin-bottom: 0;
+            padding: 14px 15px 7px;
+            min-height: 48px
+        }
+
+        .ibox-content {
+            background-color: #fff;
+            color: inherit;
+            padding: 15px 20px 20px;
+            border-color: #e7eaec;
+            -webkit-border-image: none;
+            -o-border-image: none;
+            border-image: none;
+            border-style: solid solid none;
+            border-width: 1px 0
+        }
+
+        .ibox-title h5 {
+            display: inline-block;
+            font-size: 14px;
+            margin: 0 0 7px;
+            padding: 0;
+            text-overflow: ellipsis;
+            float: left
+        }
+
+        .ibox {
+            clear: both;
+            margin-bottom: 25px;
+            margin-top: 0;
+            padding: 0
+        }
+
+        .text-navy {
+            color: #1ab394
+        }
+
+        .text-primary {
+            color: inherit
+        }
+
+        .text-success {
+            color: #1c84c6
+        }
+
+        .text-info {
+            color: #23c6c8
+        }
+
+        .text-warning {
+            color: #f8ac59
+        }
+
+        .text-danger {
+            color: #ed5565
+        }
+
+        .form-control, .single-line {
+            background-color: #FFF;
+            background-image: none;
+            border: 1px solid #e5e6e7;
+            border-radius: 1px;
+            color: inherit;
+            display: block;
+            padding: 6px 12px;
+            -webkit-transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+            transition: border-color .15s ease-in-out 0s, box-shadow .15s ease-in-out 0s;
+            width: 100%;
+            font-size: 14px
+        }
+
+        .b-r {
+            border-right: 1px solid #e7eaec
+        }
+
+        .panel-heading h1, .panel-heading h2 {
+            margin-bottom: 5px
+        }
+
+        .chosen-container-single .chosen-single {
+            background: #fff;
+            box-shadow: none;
+            -moz-box-sizing: border-box;
+            background-color: #FFF;
+            border: 1px solid #CBD5DD;
+            border-radius: 2px;
+            cursor: text;
+            height: auto !important;
+            margin: 0;
+            min-height: 30px;
+            overflow: hidden;
+            padding: 4px 12px;
+            position: relative;
+            width: 100%
+        }
+
+        .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid #e7e7e7
+        }
+
+        .btn-primary {
+            background-color: #1ab394;
+            border-color: #1ab394;
+            color: #FFF
+        }
+
+        table {
+            width: 100px;
+            table-layout: fixed; /* 只有定义了表格的布局算法为fixed，下面td的定义才能起作用。 */
+        }
+
+        .MHover {
+            text-overflow: ellipsis; /* for IE */
+            -moz-text-overflow: ellipsis; /* for Firefox,mozilla */
+            overflow: hidden;
+            white-space: nowrap;
+            text-align: left
+        }
+        .layui-layer-setwin{
+            display: none;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div id="tips_content" style="display: none">
+    <pre class="layui-code" id="tips_json"></pre>
+</div>
+<div class="row  border-bottom white-bg dashboard-header" style="margin:0px">
+    <div class="col-sm-12 text-center">
+        <span style="color: #1ab394; font-size: 20px; font-weight: 700">测试报告</span>
+    </div>
+</div>
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>报告汇总</h5>
+                    <div class="ibox-tools">
+                     <button type="button" id="export" class="btn btn-primary btn-xs" style="margin-bottom: 0px;display:none;">
+                            导出
+                        </button>
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-6 b-r" style="height:420px">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">报告名称:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="testName"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">用例总数:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="testAll"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">用例通过:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="testPass"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-danger">用例失败:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control text-danger" id="testFail"></span>
+                                    </div>
+                                </div>
+                                <!--<div class="form-group">
+                                    <label class="col-sm-2 control-label text-warning">用例跳过:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control text-warning" id="testSkip"></span>
+                                    </div>
+                                </div>-->
+                                 <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">接口个数:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="interface_count"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">项目接口个数:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="all_interface_count"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">接口覆盖率:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="interface_coverage"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">开始时间:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="beginTime"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label text-navy">运行时间:</label>
+                                    <div class="col-sm-5">
+                                        <span class="form-control" id="totalTime"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-sm-6">
+                            <div style="height:420px" id="echarts-map-chart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>详细数据</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="input-group panel-heading" style="width: 100%; background-color: #1ab394; margin-bottom: 10px; text-align: left; font-family: Consolas;">
+                        <label style="color: snow">模块:</label>
+                        <select class="chosen-select form-control" data-placeholder="----------" style="width: 300px;" name="filterClass" id="filterClass">
+                            <option value="">----------</option>
+                        </select>
+                        <label style="color: snow">结果:</label>
+                        <select class="chosen-select form-control" data-placeholder="----------" style="width: 300px;" name="filterResult" id="filterResult">
+                            <option value="">----------</option>
+                        </select>
+                        <div style="float: right">
+                            <label class="form-control">
+                                <span class="text-navy">用例数: </span><span class="text-navy b-r" id="filterAll"></span><span> | </span>
+                                <span style="color: green">成功: </span><span style="color: green" id="filterOk"></span><span> | </span>
+                                <span class="text-danger">失败: </span><span class="text-danger" id="filterFail"></span>
+                                <!--<span> | </span><span class="text-warning">跳过: </span><span class="text-warning" id="filterSkip"></span>-->
+                            </label>
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th style="width: 70px;text-align: center">编号</th>
+                            <th>模块名称</th>
+                            <th>用例名称</th>
+                            <th>请求路径</th>
+                            <th style="width: 100px">耗时</th>
+                            <th style="width: 50px">结果</th>
+                            <th style="width: 50px;text-align: center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="detailBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/echarts/3.8.5/echarts.min.js"></script>
+<script src="https://cdn.bootcss.com/chosen/1.8.2/chosen.jquery.js"></script>
+<script src="/static/lib/layui/layui.js"></script>
+<script type="text/javascript">
+	function $childNode(o) {
+	    return window.frames[o]
+	}
+	function animationHover(o, e) {
+	    o = $(o), o.hover(function () {
+	        o.addClass("animated " + e)
+	    }, function () {
+	        window.setTimeout(function () {
+	            o.removeClass("animated " + e)
+	        }, 2e3)
+	    })
+	}
+	function WinMove() {
+	    var o = "[class*=col]", e = ".ibox-title", i = "[class*=col]";
+	    $(o).sortable({
+	        handle: e,
+	        connectWith: i,
+	        tolerance: "pointer",
+	        forcePlaceholderSize: !0,
+	        opacity: .8
+	    }).disableSelection()
+	}
+	var $parentNode = window.parent.document;
+	if ($(".tooltip-demo").tooltip({
+	        selector: "[data-toggle=tooltip]",
+	        container: "body"
+	    }), $(".modal").appendTo("body"), $("[data-toggle=popover]").popover(), $(".collapse-link").click(function () {
+	        var o = $(this).closest("div.ibox"), e = $(this).find("i"), i = o.find("div.ibox-content");
+	        i.slideToggle(200), e.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down"), o.toggleClass("").toggleClass("border-bottom"), setTimeout(function () {
+	            o.resize(), o.find("[id^=map-]").resize()
+	        }, 50)
+	    }), $(".close-link").click(function () {
+	        var o = $(this).closest("div.ibox");
+	        o.remove()
+	    }), top == this) {
+	}
+</script>
+<script type="text/javascript">
+    var resultData = ${resultData};
+
+    function clickRow(obj){
+        $("#detailBody").children("tr").attr("style","font-family: Consolas");
+        $(obj).attr("style","font-family: Consolas; background-color: #b0d877");
+    }
+
+    function details(obj) {
+        if ($(obj).text() == '展开') {
+            var len = $(obj).parent().parent().children().length;
+            /*var detailLog = "";
+            //新增加
+            var logs = resultData["testResult"][parseInt($(obj).attr("buttonIndex"))]["log"];
+            $(obj).text("收缩");
+            $(obj).removeClass("btn-primary");
+            $(obj).addClass("btn-danger");
+            $.each(logs, function (i, n) {
+                detailLog = detailLog + "<p>" + n + "</p>";
+            });
+            */
+            var detailLog = "<table class='table table-bordered' style='font-size:10px'>" +
+                "<tr><th style='width: 88px;'>status_code</th>" +
+                "<th style='min-width: 250px;'>URL</th>" +
+                "<th style='width: 65px;'>method</th>" +
+                "<th style='min-width: 65px;'>params</th>" +
+                "<th style='min-width: 65px;'>body</th>" +
+                "<th style='width: 64px;'>file</th>" +
+                "<th style='max-width: 65px;'>respone_body</th>" +
+                "<th style='min-width: 65px;'>提取结果</th>" +
+                "<th style='width: 65px;'>err_msg</th></tr><tr>";
+            var logs = resultData["testResult"][parseInt($(obj).attr("buttonIndex"))]["log"];
+            $(obj).text("收缩");
+            $(obj).removeClass("btn-primary");
+            $(obj).addClass("btn-danger");
+            $.each(logs, function (i, n) {
+                detailLog = detailLog + "<td class=\"MHover\">" + n + "</td>";
+            });
+            detailLog += "</tr></table>"
+            $(obj).parent().parent().after("<tr><td colspan='" + len + "'><div style='word-wrap:break-word;word-break:break-all;font-size:12px'>" + detailLog + "</div></td></tr>");
+        } else if ($(obj).text() == '收缩') {
+            $(obj).parent().parent().next().remove();
+            $(obj).text("展开");
+            $(obj).removeClass("btn-danger");
+            $(obj).addClass("btn-primary");
+        }
+
+    }
+    $(function () {
+            layui.config({
+            base: '/static/lib/layui_exts/',
+        }).extend({
+            excel: 'excel.min',
+        });
+       layui.use(['layer', 'code','excel'], function () {
+            var layer = layui.layer, //弹层
+                form = layui.form
+            excel = layui.excel
+            var index;
+            /*$(document).on('mouseover', '.MHover', function () {
+                let text = $(this).text()
+                if (text) {
+                    index = layer.tips("<div style='color:black'>" + text + "</div>", $(this), {
+                        area: 'auto',
+                        maxWidth: 1500,
+                        tips: [3, '9b9b9b'],
+                        time: 0
+                    })
+                }
+            })
+            $(document).on('mouseout', '.MHover', function () {
+                layer.close(index);
+            })*/
+            $(document).on('click', '.MHover', function () {
+                let text = $(this).text()
+                console.log(text)
+                if (text) {
+                    var json_test = ''
+                    try {
+                        json_test = JSON.stringify(JSON.parse(text), null, 2)
+                    } catch (e) {
+                        json_test = text
+                    }
+                    //layer.open({json_test})
+                    $("#tips_json").empty().append(json_test)
+                    //layer.open({conent:$("#tips_content")})
+                    layer.open({
+                        type: 1,
+                        title:'详情',
+                        area: ["60%", "80%"],
+                        content: $("#tips_content"),
+                        btn: ["确认"],
+                        shadeClose: true,
+                        btnAlign: 'c',
+                        cancel: function () {
+                            return false;
+                        }
+                    })
+                }
+            })
+            /*$(document).on('click', '#export', function () {
+                var data1 = [{"title": "项目名称", "value": "智慧停车场"},
+                    {"title": "系统名称", "value": ""},
+                    {"title": "报告名称", "value": "一期接口功能正用例"},
+                    {"title": "接口总数", "value": '97'},
+                    {"title": "用例接口数", "value": '120'},
+                    {"title": "接口覆盖率", "value": "35.%"},
+                    {"title": "成功用例个数", "value": '99'},
+                    {"title": "失败用例个数", "value": '21'},
+                    {"title": "开始时间", "value": '2020-09-05 13:34:39'},
+                    {"title": "运行时间", "value": '207s'},
+
+
+                ]
+                var data2 = [{
+                    "number": "编号",
+                    "interface_name": "接口名称",
+                    "req_path": "请求路径",
+                    "case_count": "用例数",
+                    "result": "结果"
+                },
+                    {
+                        "number": "1",
+                        "interface_name": "车位配置-新增车位",
+                        "req_path": "/park/admin/sit/api/park/parkPlace/save",
+                        "case_count": "3",
+                        "result": "成功"
+                    },
+                    {
+                        "number": "2",
+                        "interface_name": "车位配置-分页查询",
+                        "req_path": "/park/admin/sit/api/park/parkPlace/page",
+                        "case_count": "4",
+                        "result": "成功"
+                    }]
+                excel.exportExcel({
+                    数据总览: data1,
+                    接口详细: data2
+                }, 'test.xlsx', 'xlsx');
+            })*/
+
+        })
+        $("#testName").text(resultData["testName"]);
+        $("#testPass").text(resultData["testPass"]);
+        $("#testFail").text(resultData["testFail"]);
+        $("#testSkip").text(resultData["testSkip"]);
+        $("#interface_count").text(resultData["interface_count"]);
+        $("#all_interface_count").text(resultData["all_interface_count"]);
+        $("#interface_coverage").text(resultData["interface_coverage"]);
+        $("#testAll").text(resultData["testAll"]);
+        $("#beginTime").text(resultData["beginTime"]);
+        $("#totalTime").text(resultData["totalTime"]);
+        $("#filterAll").text(resultData["testAll"]);
+        $("#filterOk").text(resultData["testPass"]);
+        $("#filterFail").text(resultData["testFail"]);
+        $("#filterSkip").text(resultData["testSkip"]);
+        var classNames = [];
+        var results = [];
+        $.each(resultData["testResult"], function (i, n) {
+            if (classNames.indexOf(n["className"]) == -1) {
+                classNames.push(n["className"]);
+            }
+            if (results.indexOf(n["status"]) == -1) {
+                results.push(n["status"]);
+            }
+        });
+
+        $.each(classNames, function (i, n) {
+            $("#filterClass").append("<option value='" + n + "' hassubinfo='true'>" + n + "</option>");
+        });
+        $.each(results, function (i, n) {
+            $("#filterResult").append("<option value='" + n + "' hassubinfo='true'>" + n + "</option>");
+        });
+
+        $("#filterClass").chosen({search_contains: true});
+        $("#filterResult").chosen({search_contains: true});
+
+        function generateResult(className, caseResult) {
+            $("#detailBody").children().remove();
+            var filterAll = 0;
+            var filterOk = 0;
+            var filterFail = 0;
+            var filterSkip = 0;
+            $.each(resultData["testResult"], function (i, n) {
+                if ((className == "" || n["className"] == className) && (caseResult == "" || n["status"] == caseResult)) {
+                    filterAll += 1;
+                    var status = "";
+                    if (n["status"] == '成功') {
+                        filterOk += 1;
+                        status = "<td><span class='text-navy'>成功</span></td>";
+                    } else if (n["status"] == '失败') {
+                        filterFail += 1;
+                        status = "<td><span class='text-danger'>失败</span></td>";
+                    } else if (n["status"] == '跳过') {
+                        filterSkip += 1;
+                        status = "<td><span class='text-warning'>跳过</span></td>";
+                    } else {
+                        status = "<td><span>" + n["status"] + "</span></td>";
+                    }
+                    var tr = "<tr style='font-family: Consolas'>" +
+                        "<td>" + (i + 1) + "</td>" +
+                        "<td>" + n["className"] + "</td>" +
+                        "<td>" + n["methodName"] + "</td>" +
+                        "<td>" + n["description"] + "</td>" +
+                        "<td>" + n["spendTime"] + "</td>" +
+                        status + "<td><button type='button' onclick='details(this)' buttonIndex='" + i + "' class='btn btn-primary btn-xs' style='margin-bottom: 0px'>展开</button></td></tr>"
+                    $("#detailBody").append(tr);
+                }
+            });
+            $("#filterAll").text(filterAll);
+            $("#filterOk").text(filterOk);
+            $("#filterFail").text(filterFail);
+            $("#filterSkip").text(filterSkip);
+        }
+
+        generateResult("", "");
+
+        $("#filterClass").on('change', function () {
+            var className = $("#filterClass").val();
+            var caseResult = $("#filterResult").val();
+            generateResult(className, caseResult);
+        });
+
+        $("#filterResult").on('change', function () {
+            var className = $("#filterClass").val();
+            var caseResult = $("#filterResult").val();
+            generateResult(className, caseResult);
+        });
+
+        //$(".chosen-select").trigger("chosen:updated");
+
+        function pie() {
+            var option = {
+                title: {
+                    text: '测试用例运行结果',
+                    subtext: '',
+                    x: 'center'
+                },
+
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['失败', '成功']
+                },
+                series: [
+                    {
+                        name: '运行结果',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: [
+                            {value: resultData["testFail"], name: '失败'},
+                            {value: resultData["testPass"], name: '成功'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            },
+                            normal:{
+                                    color:function(params) {
+                                    //自定义颜色
+                                    var colorList = [
+                                            '#D53A35', '#61A0A8',
+                                        ];
+                                        return colorList[params.dataIndex]
+                                     },
+                                label:{
+                                show: true,
+                                formatter: "{b} : {c} ({d}%)"
+                                },
+                            labelLine :{show:true}
+                            }
+                        }
+                    }
+                ]
+            };
+            var chart = echarts.init(document.getElementById("echarts-map-chart"));
+            chart.setOption(option);
+        }
+
+        pie();
+    });
+
+</script>
+</body>
+</html>
+{% endverbatim %}

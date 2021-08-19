@@ -1,0 +1,123 @@
+﻿@font-face {
+    font-family: 'layui-icon';
+    src: url('/static/lib/layui/my_font/iconfont.eot?v=240');
+    src: url('/static/lib/layui/my_font/iconfont.eot?v=240#iefix') format('embedded-opentype'),
+    url('/static/lib/layui/my_font/iconfont.svg?v=240#iconfont') format('svg'),
+    url('/static/lib/layui/my_font/iconfont.woff?v=240') format('woff'),
+    url('/static/lib/layui/my_font/iconfont.ttf?v=240') format('truetype');
+}
+
+
+.grid-demo {
+    text-align: center;
+}
+
+.panel_icon {
+    width: 40%;
+    display: inline-block;
+    padding: 22px 0;
+    float: left;
+}
+
+.panel_icon i {
+    font-size: 3em;
+    color: #fff;
+    /*旋转时间设置*/
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+}
+
+.grid-demo a:hover .panel_icon i {
+    display: inline-block;
+    /*旋转度数*/
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+}
+
+.panel_word {
+    width: 60%;
+    display: inline-block;
+    float: right;
+    margin-top: 22px;
+}
+
+.panel_word span {
+    font-size: 25px;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+
+.panel_word1 {
+    width: 60%;
+    display: inline-block;
+    float: right;
+    margin-top: 22px;
+}
+
+.panel_word1 span {
+    font-size: 25px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.grid-demo a cite {
+    font-size: 16px;
+    display: block;
+    font-style: normal;
+}
+
+.grid-demo a {
+    display: block;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/*卡片画板配合轮播使用的样式start*/
+.layui-card-body .layui-carousel-ind {
+    position: absolute;
+    top: -41px !important;
+    text-align: right;
+}
+
+.layui-carousel-ind ul {
+    background: 0 0 !important;
+}
+
+.layui-carousel-ind ul li.layui-this {
+    background-color: #999;
+}
+
+.layui-carousel-ind li {
+    background-color: #e2e2e2;
+}
+
+.layui-carousel[lay-indicator=outside] {
+    margin-bottom: 0px;
+}
+
+/*卡片画板配合轮播使用的样式end*/
+
+/*.com-sel {*/
+/*    line-height: 3rem;*/
+/*    cursor: pointer; !*鼠标上移变成小手*!*/
+/*}*/
+
+/*.com-opt {*/
+/*    padding: 10px;*/
+/*    border-radius: 10px;*/
+/*    color: #000;*/
+/*    font-size: 0.9rem;*/
+/*    outline: none;*/
+/*    !*去掉默认的下拉三角*!*/
+/*    appearance: none;*/
+/*    -moz-appearance: none;*/
+/*    !*添加下拉三角图标*!*/
+/*}*/
