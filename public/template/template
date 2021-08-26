@@ -383,7 +383,7 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="input-group panel-heading" style="width: 100%; background-color: #1ab394; margin-bottom: 10px; text-align: left; font-family: Consolas;">
+                    <div class="input-group panel-heading" style="width: 100%; background-color: #5470c6; margin-bottom: 10px; text-align: left; font-family: Consolas;">
                         <label style="color: snow">模块:</label>
                         <select class="chosen-select form-control" data-placeholder="----------" style="width: 300px;" name="filterClass" id="filterClass">
                             <option value="">----------</option>
@@ -728,7 +728,7 @@
                                     color:function(params) {
                                     //自定义颜色
                                     var colorList = [
-                                            '#D53A35', '#61A0A8',
+                                            '#D53A35', '#5470c6',
                                         ];
                                         return colorList[params.dataIndex]
                                      },

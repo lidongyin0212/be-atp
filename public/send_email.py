@@ -11,10 +11,10 @@ import socket
 
 class SendEmail(object):
     def __init__(self, to_list, file, task_name, flag=0):
-        self.Email_service = 'mail.tcl.com'
-        self.Email_port = 587
-        self.username = "sdbgatp@tcl.com"
-        self.password = "sdbg#0609"
+        self.Email_service = 'smtp.mxhichina.com'
+        self.Email_port = 465
+        self.username = "atp@syriusrobotics.com"
+        self.password = "1qwsDCFT6"
         self.to_list = to_list
         self.file = file
         self.task_name = task_name
@@ -40,7 +40,7 @@ class SendEmail(object):
         message.attach(part)
         message['From'] = Header("自动化测试平台", 'utf-8')
         message['To'] = Header(''.join(self.to_list), 'utf-8')
-        subject = '_任务名称【%s】- 接口测试报告' % self.task_name
+        subject = '任务名称为：%s- 接口测试报告' % self.task_name
         message['Subject'] = Header(subject, 'utf-8')
 
         # 添加附件
@@ -56,7 +56,7 @@ class SendEmail(object):
         # message.attach(att1)
 
         try:
-            service = smtplib.SMTP(host=self.Email_service, port=self.Email_port)
+            service = smtplib.SMTP_SSL(host=self.Email_service, port=self.Email_port)
             # service.connect(host=self.Email_service, port=self.Email_port)
             # service.connect(self.Email_service, 25)  # 25 为 SMTP 端口号
             # service.ehlo()
@@ -72,7 +72,7 @@ class SendEmail(object):
 if __name__ == '__main__':
     pass
     # re = "/result/test_result/interface/task/7/2021-06-10_15-32-43_task_3_result.html"
-    # SendEmail(['lin65.zhang@tcl.com'], re).send_email()
+    # SendEmail(['zhanglin@syriusrobotics.com'], re,'测试任务',0).send_email()
 
 
 
