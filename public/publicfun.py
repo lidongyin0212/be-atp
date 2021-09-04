@@ -364,7 +364,7 @@ def convert_one_to_many_data(ret, params, flag=False):
     return data_list
 
 
-def assert_fun(scoure_rule, result):
+def assert_fun(scoure_rule, result, status_code):
     '''
     :param scoure_rule: 预期结果
     :param result: 实际结果
@@ -376,7 +376,7 @@ def assert_fun(scoure_rule, result):
     # result = result.decode(encoding="utf-8")
     for sub_rule in scoure_rule:
         assertType = sub_rule.get("assert_name", '')
-        extract_result, except_result = extract_assert_data(sub_rule, result)
+        extract_result, except_result = extract_assert_data(sub_rule, result, status_code)
         if assertType == "assertEqual": # 等于
             try:
                 if str(except_result) == str(extract_result):
@@ -427,7 +427,7 @@ def assert_fun(scoure_rule, result):
 
 
 # 断言提取
-def extract_assert_data(scoure_rule, result):
+def extract_assert_data(scoure_rule, result, status_code):
     '''
     :param scoure_rule: 断言规则
     :param result: 实际结果
@@ -436,7 +436,8 @@ def extract_assert_data(scoure_rule, result):
     except_result, extract_rule,site = scoure_rule.get("except_result", ''), \
                                              scoure_rule.get("assert_rule", '').replace("\\\\", "\\"), \
                                              scoure_rule.get("site", '')
-
+    if extract_rule is "status_code":
+        return status_code, except_result
     extract_result = extract_data(extract_rule, result)
     site = (int(site) - 1) if site else 0
     state = 1 if extract_result else 0

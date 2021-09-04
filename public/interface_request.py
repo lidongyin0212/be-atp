@@ -168,7 +168,7 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
     #     except:
     #         content = result.content.decode('utf-8')
     # else:
-
+    status_code = result.status_code
     try:
         content = result.content.decode('utf-8')
         content = re.sub(r'(\\u[a-zA-Z0-9]{4})', lambda x: x.group(1).encode("utf-8").decode("unicode-escape"), content)
@@ -181,8 +181,9 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
             for extract in extract_data:
                 extract_param_data = "extract_unit_" + extract["name"]
                 global_variable[extract_param_data] = extract["result"]
-        if except_list and content:#断言
-            _, except_data = assert_fun(except_list, content)
+        if except_list:#断言
+            _, except_data = assert_fun(except_list, content, status_code)
+
     token_info = ''
     if (check_login(url) and (s.cookies.get_dict() is not {})) or project_name in ['Syrius炬星']:
         auth = re.findall('"data":"(.+?)"', content)
