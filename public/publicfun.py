@@ -153,10 +153,11 @@ def batch_extract_data(extract_rule_list, result_data):
         extract_rule_list = eval(extract_rule_list)
     for extract_rule in extract_rule_list:
         result = {}
-        result["name"] = extract_rule["name"]
-        result["rule"] = extract_rule["rule"]
-        result["result"] = extract_data(extract_rule["rule"], result_data)
-        extract_result.append(result)
+        if extract_rule["rule"] in result_data:
+            result["name"] = extract_rule["name"]
+            result["rule"] = extract_rule["rule"]
+            result["result"] = extract_data(extract_rule["rule"], result_data)
+            extract_result.append(result)
     return extract_result
 
 
@@ -436,8 +437,10 @@ def extract_assert_data(scoure_rule, result, status_code):
     except_result, extract_rule,site = scoure_rule.get("except_result", ''), \
                                              scoure_rule.get("assert_rule", '').replace("\\\\", "\\"), \
                                              scoure_rule.get("site", '')
-    if extract_rule is "status_code":
+    if extract_rule == "status_code":
         return status_code, except_result
+    if extract_rule != "status_code" and not result:
+        return result, except_result
     extract_result = extract_data(extract_rule, result)
     site = (int(site) - 1) if site else 0
     state = 1 if extract_result else 0

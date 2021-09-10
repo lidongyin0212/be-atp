@@ -124,7 +124,10 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
             headers['Content-Type'] = "application/json"
     else:
         cookie = json.loads(result[0]) if result else {}
-        if project_name in ['Syrius炬星'] and result: # 处理token
+        if headers and result:
+            Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
+            headers['Authorization'] = "Bearer " + Authorization
+        if project_name in ['Syrius炬星'] and result and headers == {}: # 处理token
             Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
             headers['Authorization'] = "Bearer " + Authorization
             headers['Content-Type'] = "application/json"
@@ -176,7 +179,7 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
         content = result.text
     extract_data, except_data = '', ''
     if not task_id and is_single_interface:  # 单接口判断
-        if extract_list and content:#提取依赖
+        if extract_list:#提取依赖
             extract_data = batch_extract_data(extract_list, content)
             for extract in extract_data:
                 extract_param_data = "extract_unit_" + extract["name"]

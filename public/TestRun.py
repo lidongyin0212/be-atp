@@ -90,7 +90,7 @@ class Test(unittest.TestCase):
                              html.escape(datas["req_file"]), html.escape(resp_result), extract_list,
                              '']
                 if datas["except_list"]:
-                    ret, _ = assert_fun(datas["except_list"], resp_result)
+                    ret, _ = assert_fun(datas["except_list"], resp_result, resp_code)
                     if ret != 2:
                         assert_str = html.escape('断言失败：' + str(ret))
                         raise Exception(assert_str)
