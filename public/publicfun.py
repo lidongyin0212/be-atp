@@ -434,13 +434,13 @@ def extract_assert_data(scoure_rule, result, status_code):
     :param result: 实际结果
     :return:
     '''
-    except_result, extract_rule,site = scoure_rule.get("except_result", ''), \
+    except_result, extract_rule, site = scoure_rule.get("except_result", ''), \
                                              scoure_rule.get("assert_rule", '').replace("\\\\", "\\"), \
                                              scoure_rule.get("site", '')
     if extract_rule == "status_code":
         return status_code, except_result
-    if extract_rule != "status_code" and not result:
-        return result, except_result
+    if extract_rule != "status_code" and extract_rule not in result:
+        return status_code, except_result
     extract_result = extract_data(extract_rule, result)
     site = (int(site) - 1) if site else 0
     state = 1 if extract_result else 0

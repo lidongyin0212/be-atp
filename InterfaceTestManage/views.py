@@ -4283,3 +4283,103 @@ def operate_list(request):
         rule_data = convert_data(param_list, sql_params)
         return JsonResponse({'code': 200, 'data': rule_data})
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
+
+
+'''对接Dveops流水线平台'''
+
+
+@login_check
+def bat_run_task(request):
+    username = request.session.get("username", "")
+    if request.method == "POST":
+        state, param = params_check(request.body, ["task_name", "project_name", "host"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        task_name = param.get("task_name", "").strip()
+        project_name = param.get("project_name", "").strip()
+        host = param.get("host", "").strip()
+        project_info = Sys_project.objects.filter(project_name=project_name, is_delete=0)
+        if not project_info:
+            return JsonResponse({"message": PROJECT_NOT_FOUND, "code": 500})
+        try:
+            task_info = Inte_task.objects.get(task_name=task_name, is_delete=0, project_id=project_info[0].id)
+        except:
+            return JsonResponse({"message": TASK_NOT_FOUND, "code": 500})
+        task_id = task_info.id  # 获取任务id
+        project_permission = MySQLHelper().get_all(TASK_PERMISSION, (username, task_id))  # 校验权限
+        if not project_permission:
+            return JsonResponse({'message': NOT_PERMISSION, 'code': 500})
+        task_list = task_info.case_list  # 获取用例列表
+        if not task_list:
+            return JsonResponse({"message": TASK_IS_EMPTY, "code": 500})
+        task_list = (','.join([x for x in list(eval(task_list).values()) if x])).strip(',')
+        subsystem_dict = list(eval(task_info.case_dict).keys())
+        interface_count = len(Inte_interface.objects.filter(subsystem_id__in=subsystem_dict, is_delete=0, state=1))
+        # 任务用例
+        sql = BAT_EXECTUE_TASK % (interface_count, username, task_id, task_list, task_list)
+        sql_result = MySQLHelper().get_all(sql)
+        sql_params = [
+            'id', 'case_name', 'module_id', 'module_name', 'req_method', 'req_path', 'req_headers',
+            'req_param', 'req_body', 'req_file', 'extract_list', 'except_list', 'interface_count', 'subsystem_id',
+            'run_time', 'wait_time', 'module_type', 'interface_id', 'project_id', 'type'
+        ]
+        task_data = convert_one_to_many_data(sql_result, sql_params, False)
+        [x.update({"host": host, "port": ""}) for x in task_data]
+        task_detail = convert_runtime(task_data)  # 任务详情
+        # 在数据库插入数据
+        report_id = Inte_report.objects.create(is_delete=0, task_id=task_id, username=username, report_type=1,
+                                               job_status=1).id
+
+        # 新建一个线程
+        class PrintThread(threading.Thread):
+            def run(self):
+                Test.test_suite(task_detail, "task", str(task_id), username, task_name, task_info.project_id, report_id,
+                                1)
+
+        try:
+            PrintThread().start()
+            user_operate(username, "be_now_run", "ob_task", str(task_id))  # 用户操作记录日志
+            return JsonResponse({"isStartTest": True, "code": 200, "report_id": report_id})
+        except:
+            return JsonResponse({"isStartTest": False, "code": 500})
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
+
+
+'''查询执行任务接口情况'''
+
+
+@login_check
+def get_run_task(request):
+    if request.method == "POST":
+        state, param = params_check(request.body, ["report_id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("report_id", "")
+        username = request.session.get('username', '')
+        sql = SELECT_REPORT % (id, username)
+        sql_param = ['report_path', 'job_status', 'job_count']
+        data_list = convert_data(MySQLHelper().get_all(sql), sql_param)
+        if not data_list:
+            return JsonResponse({"message": "报告不存在！", "code": 500})
+        dict_data = {}
+        for i in data_list:
+            dict_data = i
+        if dict_data["report_path"] == "" or dict_data["job_count"] == "":
+            data = {"testStatus": 1, "isPass": False, "reportLink": "", "sampleCount": 0, "errorCount": 0,
+                    "errorPct": "0%"}
+            return JsonResponse({"message": "ok", "code": 200, "data": data})
+        job_status = dict_data["job_status"]  # 执行状态
+        host = request.get_host()  # 获取当前服务的 ip 地址
+        report_path = "http://" + host + dict_data["report_path"]  # 报告链接
+        job_count = json.loads(dict_data["job_count"])  # 用例数
+        sampleCount = job_count["sampleCount"]  # 任务用例总数
+        errorCount = job_count["errorCount"]  # 任务用例失败数
+        errorPct = '{:.2f}%'.format(errorCount / sampleCount * 100)  # 错误率
+        if int(errorCount) > 0:
+            isPass = False
+        else:
+            isPass = True
+        data = {"testStatus": job_status, "isPass": isPass, "reportLink": report_path, "sampleCount": sampleCount,
+                "errorCount": errorCount, "errorPct": errorPct}
+        return JsonResponse({"message": "ok", "code": 200, "data": data})
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
