@@ -39,6 +39,7 @@ def unzip_data(content):
 #     encode_data = encode_multipart_formdata(filed)
 #     return encode_data[0], encode_data[1]
 # 文件上传
+
 def convert_file(filed, project_id, file):
     file = eval(file) if isinstance(file, str) else file
     filed = list(zip(filed.keys(), filed.values()))

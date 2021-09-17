@@ -113,7 +113,7 @@ def register(request):
         operator = request.session.get('username', '')
         user_info = Sys_user_info.objects
         #长度校验
-        if len(username) > 30 or len(username_cn) > 10 or len(email) > 30 or len(password) > 20:
+        if len(username) > 30 or len(username_cn) > 10 or len(email) > 50 or len(password) > 20:
             return JsonResponse({'message': INPUT_LONG, 'code': 500})
         # 将数据进行注册
         # 后台对获取的数据进行校验,之后在传递.
