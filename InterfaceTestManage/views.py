@@ -3473,7 +3473,7 @@ def module_add(request):
         module_exist = Sys_module.objects.filter(module_name=module_name, subsystem_id=subsystem_id,
                                                  is_delete=0)  # 判断重名
         subsystem_id_exist = Sys_subsystem.objects.filter(id=subsystem_id, is_delete=0)  # 判断id存在数据库
-        if len(module_name) > 20:
+        if len(module_name) > 50:
             return JsonResponse({"message": NAME_INPUT_LONG, "code": 500})  # 输入超长提示
         if len(module_desc) > 200:
             return JsonResponse({"message": DESC_INPUT_LONG, "code": 500})  # 输入超长提示
