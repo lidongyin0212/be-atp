@@ -595,7 +595,7 @@ def environment_add(request):
         env_desc = param.get('env_desc', '').strip()
         username = request.session.get("username", '')
         environment = Sys_env.objects
-        if len(env_name) > 20:
+        if len(env_name) > 50:
             return JsonResponse({"message": "环境名称超长", "code": 500})
         if environment.filter(env_name=env_name, subsystem_id=subsystem_id, is_delete=0):
             return JsonResponse({'message': NAME_REPETITION, 'code': 500})
