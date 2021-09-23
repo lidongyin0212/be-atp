@@ -125,9 +125,9 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
             headers['Content-Type'] = "application/json"
     else:
         cookie = json.loads(result[0]) if result else {}
-        if headers and result:
-            Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
-            headers['Authorization'] = "Bearer " + Authorization
+        # if headers and result:
+        #     Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
+        #     headers['Authorization'] = "Bearer " + Authorization
         if project_name in ['Syrius炬星'] and result and headers == {}: # 处理token
             Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
             headers['Authorization'] = "Bearer " + Authorization
