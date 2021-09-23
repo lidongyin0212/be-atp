@@ -643,7 +643,7 @@ def environment_edit(request, id):
         port = param.get('port', '')
         env_desc = param.get('env_desc', '')
         project_id = param.get('project_id', '')
-        if len(env_name) > 20:
+        if len(env_name) > 50:
             return JsonResponse({"message": "环境名称超长", "code": 500})
         if int(id):
             if Sys_env.objects.filter(env_name=env_name, project_id=project_id, is_delete=0).exclude(id=id):
