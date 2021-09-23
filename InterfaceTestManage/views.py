@@ -3537,7 +3537,7 @@ def module_edit(request, id):
         info = Sys_module.objects.filter(id=id, is_delete=0)
         # if int(id) == int(parent_id):
         #     return JsonResponse({"message": NOT_CHOOSE_SELF, "code": 500})
-        if len(module_name) > 20:
+        if len(module_name) > 50:
             return JsonResponse({"message": NAME_INPUT_LONG, "code": 500})
         if len(module_desc) > 200:
             return JsonResponse({"message": DESC_INPUT_LONG, "code": 500})
