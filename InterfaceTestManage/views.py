@@ -3237,7 +3237,7 @@ def param_delete(request):
                 name = Sys_public_param.objects.get(id=id).param_name
                 param = Sys_public_param.objects.filter(id=id, is_delete=0)
                 if len(param) != 0:
-                    param.update(is_delete=None, username=username, update_time=get_time())
+                    param.update(is_delete=1, username=username, update_time=get_time())
                     # param.delete()
                     del_ids.append(id)
                     param_name.append(name)

@@ -65,16 +65,7 @@ class EncryPtion(object):
 
         return base64.b64encode(plaintext.encrypt(a)).decode('utf-8')
 
-# 天眼系统
-def eye_rsa(body):
-    if type(body) == str:
-        body = json.loads(body)
-    key = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgsmur0Xos/+KR6SexA7+7hBSsbLIeL0hVdJ/BQ6TJZqprexozkbfOkSYa7YdsUHyikKUPObdaPRbztPVT51QOjNFDG/Hoc25ljLCvpkkuCrGlQaZrRU/qgHjMJiLra4Zu5HtYyV8DdB7Kt983D51H+2c9/tCsIqXVO9I6jHqSz2yUs6x2R6+4hYTnL7fmA8lM+zPkqTWttjUYxLAv5AQigDbjyulSCm5y8r2BuN5WkAXkDuv3MwwQGxbM4NOWEdW/dwiIeqBc4Z6jQO72GotsBN17peDGHWP2UQ0KhHS8Wbl4C1jyQcX9Jl0OQrKiIgTDBhlxd28tVumvw5iZsovoQIDAQAB'
-    username = EncryPtion().str_RAS(key, body["username"])
-    password = EncryPtion().str_RAS(key, body["password"])
-    data = json.dumps({"username": username, "password": password})
-    # resule = requests.request(method="post",url=url, data=data, headers={'Content-Type': 'application/json'}).text
-    return data
+
 
 def encryption(method, url, key, plaintext, extract_field, encr_type=0):
     '''

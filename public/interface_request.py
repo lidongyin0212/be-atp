@@ -61,6 +61,13 @@ def convert_file(filed, project_id, file):
             encode_data = encode_multipart_formdata(filed)
     return encode_data[0], encode_data[1]
 
+# 登录加密
+def check_oauth2(url):
+    result = re.search(
+        "/token/?$|Register",
+        url)
+    return result
+
 
 # 登录加密
 def check_login(url):
@@ -118,16 +125,20 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
     else:
         params = ''
     project_name = Sys_project.objects.get(id=project_id).project_name
+    subsystem_name = Sys_subsystem.objects.get(id=subsystem_id).subsystem_name
     headers = json.loads(headers) if headers else {}
     if check_other(url):
         cookie = {}
         if project_name in ['Syrius炬星']:
             headers['Content-Type'] = "application/json"
+    elif check_oauth2(url):
+        cookie = {}
+        data = "1ag4t4hlqh0tkcknrtpt216mc4:g3qe9k9sgegrpq00nvvtra8rmr5jp7g8b2lubk81i5bume4p7sv".encode("utf-8")
+        Base64Encode = base64.b64encode(data).decode()
+        headers['Content-Type'] = "application/x-www-form-urlencoded"
+        headers['Authorization'] = "Basic " + Base64Encode
     else:
         cookie = json.loads(result[0]) if result else {}
-        # if headers and result:
-        #     Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
-        #     headers['Authorization'] = "Bearer " + Authorization
         if project_name in ['Syrius炬星'] and result and headers == {}: # 处理token
             Authorization = json.loads(result[1]).get('Authorization', '') if result[1] else ''
             headers['Authorization'] = "Bearer " + Authorization
