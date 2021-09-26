@@ -133,8 +133,10 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
             headers['Content-Type'] = "application/json"
     elif check_oauth2(url):
         cookie = {}
-        data = "1ag4t4hlqh0tkcknrtpt216mc4:g3qe9k9sgegrpq00nvvtra8rmr5jp7g8b2lubk81i5bume4p7sv".encode("utf-8")
-        Base64Encode = base64.b64encode(data).decode()
+        clientKey = headers["clientKey"]
+        clientSecret = headers["clientSecret"]
+        data = clientKey + ":" + clientSecret
+        Base64Encode = base64.b64encode(data.encode("utf-8")).decode()
         headers['Content-Type'] = "application/x-www-form-urlencoded"
         headers['Authorization'] = "Basic " + Base64Encode
     else:
@@ -206,11 +208,13 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
         userToken = re.findall('"userToken":"(.+?)"', content)
         accessToken = re.findall('"accessToken":"(.+?)"', content)
         ecdataToken = re.findall('"ecdataToken":"(.*?)"', content)
+        access_token = re.findall('"access_token":"(.*?)"', content)
         auth = auth[0] if auth else ""
         token = token[0] if token else ""
         userToken = userToken[0] if userToken else ""
         accessToken = accessToken[0] if accessToken else ""
         ecdataToken = ecdataToken[0] if ecdataToken else ""
+        access_token = access_token[0] if ecdataToken else ""
         if auth:
             token_info = auth
         elif token:
@@ -221,6 +225,8 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
             token_info = userToken
         elif ecdataToken:
             token_info = ecdataToken
+        elif access_token:
+            token_info = access_token
         else:
             token_info = ""
     req_cookie_sql = "select * from sys_req_cookie where username='%s' and project_id=%s and task_id=%s ORDER BY id desc limit 1" % (
