@@ -214,7 +214,7 @@ def interface_request(method, url, params, headers, body, file, project_id, subs
         userToken = userToken[0] if userToken else ""
         accessToken = accessToken[0] if accessToken else ""
         ecdataToken = ecdataToken[0] if ecdataToken else ""
-        access_token = access_token[0] if ecdataToken else ""
+        access_token = access_token[0] if access_token else ""
         if auth:
             token_info = auth
         elif token:
