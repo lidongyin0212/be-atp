@@ -3482,7 +3482,7 @@ def module_add(request):
         if subsystem_id_exist:
             if not parent_id:
                 id = Sys_module.objects.create(module_name=module_name, module_desc=module_desc,
-                                               subsystem_id=subsystem_id,
+                                               subsystem_id=subsystem_id, operater=username,
                                                env_id=env_id, username=username).id
             else:
                 parent_module = Sys_module.objects.filter(id=parent_id, is_delete=0)
@@ -3491,12 +3491,12 @@ def module_add(request):
                     if parent_module[0].module_type == 1:
                         id = Sys_module.objects.create(module_name=module_name, module_desc=module_desc,
                                                        env_id=env_id, subsystem_id=subsystem_id,
-                                                       parent_id=parent_id,
+                                                       parent_id=parent_id, operater=username,
                                                        username=username).id
                     else:
                         id = Sys_module.objects.create(module_name=module_name, module_desc=module_desc,
                                                        env_id=env_id, subsystem_id=subsystem_id,
-                                                       parent_id=parent_id,
+                                                       parent_id=parent_id, operater=username,
                                                        module_type=parent_module[0].module_type,
                                                        username=username).id
                 else:

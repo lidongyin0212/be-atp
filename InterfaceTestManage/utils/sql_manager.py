@@ -222,7 +222,7 @@ GET_PERSON_DATABASE_STATEMENT = """select sys_db_env.project_id from sys_user_pe
 INTERFACE_LIST_LIKE = """select inte_interface.id ,inte_interface.interface_name, inte_interface.req_path, 
                         inte_interface.req_method, inte_interface.state,
                         inte_interface.username, DATE_FORMAT(inte_interface.update_time, '%%Y-%%m-%%d %%H:%%i:%%S'),
-                         sum(case when inte_case.case_type=1 and inte_case.is_delete=0 and inte_case.state=1 then 1 else 0 end)
+                         sum(case when inte_case.is_delete=0 and inte_case.state=1 then 1 else 0 end)
                          ,inte_interface.creator
                         from inte_interface
                         left join inte_case on inte_interface.id=inte_case.interface_id
@@ -858,7 +858,7 @@ INTE_CASE_SQL = """SELECT id,case_name,req_path,req_method,req_headers,req_param
                        WHERE is_delete=0 and id in (%s) order by find_in_set(id,'%s')"""
 # 查询接口
 INTERFACE_SQL = """SELECT id,interface_name,req_path,req_method,req_headers,req_param,req_body,req_file,extract_list,except_list,state,excute_result,env_id,username,
-                        subsystem_id from inte_interface where subsystem_id = %s and is_delete=0"""
+                        subsystem_id,project_id from inte_interface where subsystem_id = %s and is_delete=0"""
 
 # TODO  复制任务插入数据库
 TASK_SQL = """select task_name,task_desc,case_list,case_dict,execute_result,cron,project_id,state from inte_task where is_delete=0 and id=%s"""

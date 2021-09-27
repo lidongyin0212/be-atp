@@ -61,7 +61,7 @@ def copy_subsystem(subsystem_id, username):
                 nwe_envId = Sys_env.objects.create(
                     create_time=copy_get_time, update_time=copy_get_time, is_delete=0, env_name=env_name,
                     env_desc=i["env_desc"], host=i["host"], port=i["port"], project_id=i["project_id"],
-                    state=i["state"],
+                    state=i["state"], creator=username,
                     username=username, subsystem_id=add_subsystem_id).id
                 env_dict[str(i["id"])] = nwe_envId
         except:
@@ -76,23 +76,22 @@ def copy_subsystem(subsystem_id, username):
 
         # 复制接口并返回新旧接口id字典
         interface_sql_param = ['id', 'interface_name', 'req_path', 'req_method', 'req_headers', 'req_param', 'req_body',
-                               'req_file', 'extract_list',
-                               'except_list', 'state', 'excute_result', 'env_id', 'username', 'subsystem_id']
+                               'req_file', 'extract_list','except_list', 'state', 'excute_result', 'env_id', 'username',
+                               'subsystem_id', 'project_id']
         interface_list = convert_data(MySQLHelper().get_all(INTERFACE_SQL, subsystem_id), interface_sql_param)
         interface_dict = {}
         try:
             for i in interface_list:
                 new_id = env_dict[str(i['env_id'])]
                 id = Inte_interface.objects.create(create_time=copy_get_time, update_time=copy_get_time, is_delete=0,
-                                                   interface_name=i['interface_name'],
-                                                   req_path=i['req_path'], req_method=i['req_method'],
-                                                   req_headers=i['req_headers'],
+                                                   interface_name=i['interface_name'],req_path=i['req_path'],
+                                                   req_method=i['req_method'],req_headers=i['req_headers'],
                                                    req_param=i['req_param'], req_body=i['req_body'],
-                                                   req_file=i['req_file'],
-                                                   extract_list=i['extract_list'], except_list=i['except_list'],
-                                                   state=i['state'],
-                                                   excute_result=i['excute_result'], env_id=new_id, username=username,
-                                                   subsystem_id=add_subsystem_id).id
+                                                   req_file=i['req_file'],extract_list=i['extract_list'],
+                                                   except_list=i['except_list'],state=i['state'],
+                                                   excute_result=i['excute_result'], env_id=new_id,
+                                                   project_id=i['project_id'],username=username,
+                                                   creator=username, subsystem_id=add_subsystem_id).id
                 interface_dict[str(i['id'])] = id
         except:
             Sys_subsystem.objects.filter(id=add_subsystem_id).update(is_delete=1)  # 复制失败时删除复制后的子系统
@@ -175,7 +174,8 @@ def inte_case_add(case_list, module_id, username, interface_dict):
             req_method=i['req_method'], req_headers=i['req_headers'], req_param=i['req_param'], req_body=i['req_body'],
             req_file=i['req_file'], extract_list=i['extract_list'], except_list=i['except_list'], is_mock=i['is_mock'],
             mock_id=mock_id, run_time=i['run_time'], state=i['state'], excute_result=i['excute_result'],
-            interface_id=new_interface_id, module_id=module_id, username=username,case_type=i["case_type"]
+            interface_id=new_interface_id, module_id=module_id, username=username, creator=username,
+            case_type=i["case_type"]
         ).id
         id_list.append(id)
     return id_list
@@ -214,7 +214,7 @@ def copy_task(task_id, username):
                                                        case_list=i['case_list'], case_dict=i['case_dict'],
                                                        execute_result=i['execute_result'],
                                                        cron=i['cron'], project_id=i['project_id'], state=i['state'],
-                                                       username=username).id
+                                                       username=username, creator=username).id
             except:
                 return "任务复制失败！", new_task_id
             # case_list = json.loads(i['case_list'])  # str -- dict
@@ -237,7 +237,8 @@ def copy_task(task_id, username):
                         req_method=j["req_method"], req_headers=j["req_headers"], req_param=j["req_param"],
                         req_body=j["req_body"], req_file=j["req_file"], extract_list=j["extract_list"],
                         except_list=j["except_list"], is_mock=j["is_mock"], mock_id=mock_id, run_time=j["run_time"],
-                        state=j["state"], env_id=j["env_id"], excute_result=j["excute_result"], username=username
+                        state=j["state"], env_id=j["env_id"], excute_result=j["excute_result"], username=username,
+                        creator=username
                     )
             except:
                 Inte_task.objects.filter(id=new_task_id).update(is_delete=1)
