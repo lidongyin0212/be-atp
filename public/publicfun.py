@@ -131,16 +131,18 @@ def extract_data(extract_rule, result_data):
     elif resp_int:
         return resp_int
     else:
-        rest_json = demjson.decode(result_data)[extract_rule]
-        if rest_json:
-            if type(rest_json) == bool:
-                rest_json = str(rest_json)
-                return [rest_json]
-            return rest_json
-        else: # 匹配不到，手动写正则
-            resp_data = re.findall(extract_rule, result_data, re.S)
-            return resp_data
-
+        try:
+            rest_json = demjson.decode(result_data)[extract_rule]
+            if rest_json:
+                if type(rest_json) == bool:
+                    rest_json = str(rest_json)
+                    return [rest_json]
+                return rest_json
+            else: # 匹配不到，手动写正则
+                resp_data = re.findall(extract_rule, result_data, re.S)
+                return resp_data
+        except:
+            return []
 
 def batch_extract_data(extract_rule_list, result_data):
     '''
