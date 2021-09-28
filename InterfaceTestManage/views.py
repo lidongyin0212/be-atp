@@ -1164,11 +1164,12 @@ def case_add(request):
                     extract_name = rule['name']
                     extract_rule = rule['rule']
                     data_format = rule['dataFormat']
-                    if Inte_extract.objects.filter(param_name=extract_name, project_id=project_id, is_delete=0):
+                    if Inte_extract.objects.filter(param_name=extract_name, project_id=project_id,
+                                                   subsystem_id=subsystem_id, is_delete=0):
                         return JsonResponse({'message': EXTRACT_NAME_REPRTITION, 'code': 500})
                     create_list.append(
                         Inte_extract(param_name=extract_name, rule=extract_rule, data_format=data_format,
-                                     username=username, project_id=project_id))
+                                     username=username, project_id=project_id, subsystem_id=subsystem_id))
                     rule_name.append(rule['name'])
                 try:
                     Inte_extract.objects.bulk_create(create_list)
@@ -1176,7 +1177,7 @@ def case_add(request):
                     print(e)
                     return JsonResponse({'message': EXTRACT_NAME_REPRTITION, 'code': 500})
             if rule_name:
-                id_result = MySQLHelper().get_all(SELECT_EXTRACT_ID, (project_id, tuple(rule_name)))
+                id_result = MySQLHelper().get_all(SELECT_EXTRACT_ID, (project_id, subsystem_id, tuple(rule_name)))
             else:
                 id_result = []
             extract_id = ",".join([str(x[0]) for x in id_result])
@@ -1266,6 +1267,7 @@ def case_edit(request, id):
                         data_format = rule_dict['dataFormat']
                         if "id" in rule_dict.keys() and rule_dict['id'] != 'undefined':
                             if Inte_extract.objects.filter(param_name=extract_name, project_id=project_id,
+                                                           subsystem_id=subsystem_id,
                                                            is_delete=0).exclude(id=int(rule_dict['id'])):
                                 return JsonResponse({'message': EXTRACT_NAME_REPRTITION, 'code': 500})
                             update_info = interface_extract.filter(id=rule_dict['id'])[0]
@@ -1275,11 +1277,12 @@ def case_edit(request, id):
                                 update_info.data_format = data_format
                                 update_objs.append(update_info)
                         else:
-                            if Inte_extract.objects.filter(param_name=extract_name, project_id=project_id,is_delete=0):
+                            if Inte_extract.objects.filter(param_name=extract_name, project_id=project_id,
+                                                           subsystem_id=subsystem_id, is_delete=0):
                                 return JsonResponse({'message': EXTRACT_NAME_REPRTITION, 'code': 500})
                             create_list.append(
                                 Inte_extract(param_name=extract_name, rule=extract_rule, data_format=data_format,
-                                             project_id=project_id, username=username))
+                                             project_id=project_id, subsystem_id=subsystem_id, username=username))
                         extract_name_list.append(extract_name)
                     try:
                         bulk_update(update_objs)
@@ -1293,7 +1296,8 @@ def case_edit(request, id):
                             print(e)
                             return JsonResponse({'message': EXTRACT_NAME_REPRTITION, 'code': 500})
 
-                    id_result = MySQLHelper().get_all(SELECT_EXTRACT_ID, (project_id, tuple(extract_name_list)))
+                    id_result = MySQLHelper().get_all(SELECT_EXTRACT_ID,
+                                                      (project_id, subsystem_id, tuple(extract_name_list)))
                     extract_id = ",".join([str(x[0]) for x in id_result])
 
                     new_extract_id = extract_id.split(",")
@@ -1363,6 +1367,7 @@ def case_delete(request):
                 case_info = Inte_case.objects.filter(id=id)
                 if case_info[0].extract_list:
                     Inte_extract.objects.filter(id__in=case_info[0].extract_list.split(',')).delete()
+                    # Inte_extract.objects.filter(id__in=case_info[0].extract_list.split(',')).update(is_delete=1)
                 case_info.update(is_delete=1, username=username, update_time=get_time())
                 module_id = case_info[0].module_id
                 case_if_list = Sys_module.objects.filter(id=module_id)[0].case_list.split(',')

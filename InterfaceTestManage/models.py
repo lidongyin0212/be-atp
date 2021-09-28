@@ -354,6 +354,7 @@ class Inte_extract(BaseTable):
     rule = models.CharField('变量规则', max_length=256, null=True, default="")
     data_format = models.CharField('服务器返回的数据格式', null=True, max_length=50, default='')
     project_id = models.IntegerField('项目id', null=True)
+    subsystem_id = models.IntegerField('系统id', null=True)
     username = models.CharField('操作人', max_length=20, null=True, default="")
 
     class Meta:

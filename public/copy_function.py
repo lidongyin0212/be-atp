@@ -167,12 +167,23 @@ def inte_case_add(case_list, module_id, username, interface_dict):
     id_list = []
     for i in cese_list:
         mock_id = i['mock_id'] if i['mock_id'] else None
-        new_interface_id = interface_dict[str(i['interface_id'])] #通过旧接口ID 获取新的接口ID
+        new_interface_id = interface_dict[str(i['interface_id'])]  # 通过旧接口ID 获取新的接口ID
+        new_subsystem_id = Inte_interface.objects.get(id=new_interface_id).subsystem_id
+        extract_list = i['extract_list']
+        extract_param = ['param_name', 'param_desc', 'rule', 'data_format', 'project_id', 'subsystem_id']
+        sql = EXTRACT_SQL % extract_list
+        extract_list = convert_data(MySQLHelper().get_all(sql), extract_param)
+        for j in extract_list:
+            extract_id = Inte_extract.objects.create(
+                create_time=copy_get_time, update_time=copy_get_time, is_delete=0, param_name=j["param_name"],
+                param_desc=j['param_desc'], rule=j['rule'], data_format=j['data_format'], project_id=j['project_id'],
+                subsystem_id=new_subsystem_id, username=username
+            ).id
         id = Inte_case.objects.create(
             create_time=copy_get_time, update_time=copy_get_time, is_delete=0, case_name=i['case_name'],
             req_path=i['req_path'],
             req_method=i['req_method'], req_headers=i['req_headers'], req_param=i['req_param'], req_body=i['req_body'],
-            req_file=i['req_file'], extract_list=i['extract_list'], except_list=i['except_list'], is_mock=i['is_mock'],
+            req_file=i['req_file'], extract_list=extract_id, except_list=i['except_list'], is_mock=i['is_mock'],
             mock_id=mock_id, run_time=i['run_time'], state=i['state'], excute_result=i['excute_result'],
             interface_id=new_interface_id, module_id=module_id, username=username, creator=username,
             case_type=i["case_type"]

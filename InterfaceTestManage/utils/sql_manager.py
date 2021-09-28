@@ -445,7 +445,7 @@ SELECT_INTERFACE_EXTRACT_LIST2 = """select param_name, rule, data_format from in
 # 指定提取规则参数的id
 # SELECT_PUBLIC_PARAM_ID = """select id from inte_extract where project_id=%s and `param_name` in %s"""
 
-SELECT_EXTRACT_ID = """select id from inte_extract where project_id=%s and `param_name` in %s"""
+SELECT_EXTRACT_ID = """select id from inte_extract where project_id=%s and subsystem_id=%s and `param_name` in %s"""
 
 # 执行用例的列表
 EXECUTE_CASE_LIST = """select inte_case.id, case_name, sys_module.id, module_name, sys_env.host, sys_env.port,
@@ -856,6 +856,8 @@ MODULE_SQL = """SELECT id, module_name,module_desc,module_type,parent_id,subsyst
 INTE_CASE_SQL = """SELECT id,case_name,req_path,req_method,req_headers,req_param,req_body,req_file,extract_list,except_list,is_mock,
                        mock_id,run_time,state,excute_result,interface_id,module_id,username,case_type FROM inte_case 
                        WHERE is_delete=0 and id in (%s) order by find_in_set(id,'%s')"""
+# 查询依赖变量
+EXTRACT_SQL = """select param_name,param_desc,rule,data_format,project_id,subsystem_id from inte_extract where id = %s"""
 # 查询接口
 INTERFACE_SQL = """SELECT id,interface_name,req_path,req_method,req_headers,req_param,req_body,req_file,extract_list,except_list,state,excute_result,env_id,username,
                         subsystem_id,project_id from inte_interface where subsystem_id = %s and is_delete=0"""
