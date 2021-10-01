@@ -424,3 +424,16 @@ class Sys_user_operate(models.Model):
     class Meta:
         verbose_name = '用户操作记录'
         db_table = 'sys_user_operate'
+
+
+'''宝时项目状态存储'''
+
+class Sys_notify(BaseTable):
+    status = models.IntegerField('订单状态', null=True, default=1)
+    desc = models.CharField('说明', max_length=1024, null=True, default="")
+    order_id = models.CharField('订单状态', max_length=50, null=True, default="")
+    username = models.CharField('操作人', max_length=20, null=True, default="")
+
+    class Meta:
+        verbose_name = '宝时项目状态存储'
+        db_table = 'sys_notiry'

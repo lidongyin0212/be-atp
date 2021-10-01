@@ -4388,3 +4388,30 @@ def get_run_task(request):
                 "errorCount": errorCount, "errorPct": errorPct}
         return JsonResponse({"message": "ok", "code": 200, "data": data})
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
+
+
+def notify(request):
+    if request.method == "GET":
+        id = request.GET.get("id", "")
+        if Sys_notify.objects.filter(order_id=id,status=1):
+            return JsonResponse({"message": "订单执行完毕", "code": 200})
+        return JsonResponse({"message": "未找到订单", "code": 400})
+    if request.method == "POST":
+        state, param = params_check(request.body, ["id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("id", "")
+        signature = request.GET.get("signature", "")
+
+        body = {"id":id}
+        body = json.dumps(body).replace(" ", "")
+        url = "/api/notify?name=example&clientId=1ag4t4hlqh0tkcknrtpt216mc4"
+        data = "POST" + "\n" + url + "\n" + body + "\n"
+        clientSecret = "g3qe9k9sgegrpq00nvvtra8rmr5jp7g8b2lubk81i5bume4p7sv"
+        secret = clientSecret + ":" + data
+        sha256 = hashlib.sha256(secret.encode('utf-8')).hexdigest()
+        if sha256 == signature:
+            Sys_notify.objects.create(create_time=get_time(), update_time=get_time(), is_delete=0,
+                                      status=1, order_id=id, username="admin")
+            return JsonResponse({"message": "订单执行完毕", "code": 200, "signature": sha256})
+        return JsonResponse({"message": "签名错误", "code": 400})

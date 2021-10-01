@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : $[DATA] $[TIME]
 # @Author  : zhang lin
+import hashlib
 import json
 import requests
 import base64
@@ -127,9 +128,24 @@ def marketing(text):
     en_text = en_text.decode('utf8') #将字节型数据转换成python中的字符串类型
     return en_text.replace('\n', '').replace('\r', '')
 
+def sign(method, url, body, clientSecret):
+    if type(body) == dict:
+        body = json.dumps(body).replace(" ", "")
+    else:
+        body = body.replace(" ", "")
+    data = method + "\n" + url + "\n" + body + "\n"
+    secret = clientSecret + ":" + data
+    sha256 = hashlib.sha256(secret.encode('utf-8')).hexdigest()
+    return sha256
 
 if __name__ == '__main__':
     pass
+    method = "POST"
+    url = "/api/notify?name=example&clientId=1ag4t4hlqh0tkcknrtpt216mc4"
+    body = '{"id":"NO123"}'
+    clientSecret = "g3qe9k9sgegrpq00nvvtra8rmr5jp7g8b2lubk81i5bume4p7sv"
+
+    print(sign(method, url, body, clientSecret))
     # nowTime = lambda: int(round(time.time() * 1000)) # 获取当前系统时间戳，毫秒级
     # text = '{"user":"1234567@mailscode.com","activityId":"39","date":%s,"deviceId":"162642632594989363203"}' % nowTime()
     # text = '{"username":"RHSRYTJUYUKIJKH","userPhone":"23435467","email":"SDHBCDJ@qq.com","idCard":"K0987"}'
