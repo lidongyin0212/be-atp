@@ -1,4 +1,5 @@
 # coding:utf-8
+import json
 import traceback
 import openpyxl
 import tempfile
@@ -20,6 +21,7 @@ from public.export_function import *
 from public.thread_manage import *
 from public.mysqldb import MySQLHelper
 # from public.task import SCHEDULER
+from django.http import HttpResponse
 from public.task import *
 from public.importSQL import *
 from InterfaceTestManage.utils.user_operate import user_operate
@@ -4402,16 +4404,22 @@ def notify(request):
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
         signature = request.GET.get("signature", "")
+        param = json.loads(json.dumps(request.GET))
+        del param["signature"]
+        urls = []
+        for key, value in param.items():
+            u = key + "=" + value + "&"
+            urls.append(u)
+        urls = "".join(urls)[:-1]
 
-        body = {"id":id}
-        body = json.dumps(body).replace(" ", "")
-        url = "/api/notify?name=example&clientId=1ag4t4hlqh0tkcknrtpt216mc4"
+        body = json.dumps(json.loads(request.body)).replace(" ", "")
+        url = "/api/notify?" + urls
         data = "POST" + "\n" + url + "\n" + body + "\n"
-        clientSecret = "g3qe9k9sgegrpq00nvvtra8rmr5jp7g8b2lubk81i5bume4p7sv"
+        clientSecret = "ethe73nk6nausgk5ngs5qnftdu8d57lmefmfjjp8dcoc22g0kl2"
         secret = clientSecret + ":" + data
         sha256 = hashlib.sha256(secret.encode('utf-8')).hexdigest()
         if sha256 == signature:
             Sys_notify.objects.create(create_time=get_time(), update_time=get_time(), is_delete=0,
                                       status=1, order_id=id, username="admin")
             return JsonResponse({"message": "订单执行完毕", "code": 200, "signature": sha256})
-        return JsonResponse({"message": "签名错误", "code": 400})
+        return HttpResponse(status=400)
