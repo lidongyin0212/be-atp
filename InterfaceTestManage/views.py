@@ -4411,7 +4411,6 @@ def notify(request):
             u = key + "=" + value + "&"
             urls.append(u)
         urls = "".join(urls)[:-1]
-
         body = json.dumps(json.loads(request.body)).replace(" ", "")
         url = "/api/notify?" + urls
         data = "POST" + "\n" + url + "\n" + body + "\n"
@@ -4421,5 +4420,31 @@ def notify(request):
         if sha256 == signature:
             Sys_notify.objects.create(create_time=get_time(), update_time=get_time(), is_delete=0,
                                       status=1, order_id=id, username="admin")
+            data = {"body":body, "message":"订单执行完毕", "signature": sha256}
+            user_operate("notify", "200", "wms-mock接口", data)
             return JsonResponse({"message": "订单执行完毕", "code": 200, "signature": sha256})
+        user_operate("notify", "400", "wms-mock接口", "签名验证失败")
         return HttpResponse(status=400)
+
+def notifyfail(request):
+    user_operate("notify", "400", "wms-mock接口", "测试所用错误信息：400")
+    return HttpResponse(status=400)
+
+def notify500(request):
+    user_operate("notify", "500", "wms-mock接口", "测试所用错误信息：500")
+    return HttpResponse(status=500)
+
+def notify_log(request):
+    if request.method == "GET":
+        behavior = request.GET.get("status", "")
+        param_sql = ["operate_time", "username", "behavior", "object_name", "object_desc"]
+        if behavior:
+            sql = """select operate_time, username, behavior, object_name,
+             object_desc from sys_user_operate where username = 'notify' and behavior = %s""" % behavior
+        else:
+            sql = """select operate_time, username, behavior, object_name,
+                 object_desc from sys_user_operate where username = 'notify'"""
+        param_list = MySQLHelper().get_all(sql)
+        data = convert_data(param_list, param_sql)
+        return JsonResponse({"message": "ok", "code": 200, "data": data})
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
