@@ -1069,3 +1069,6 @@ COUNT_OPERATE = """select count(*) from sys_user_operate a
 
 NOTIFY_SQL = """select operate_time, username, behavior, object_name, object_desc from sys_user_operate where username = 'notify' and 
                 case when ''='%s' then 1 else behavior='%s'  end and case when ''='%s' then 1 else object_name='%s' end"""
+
+NOTIFY_SQL_TEST = """select operate_time, username, behavior, object_name, object_desc from sys_user_operate where username = 'notifytest' and 
+                case when ''='%s' then 1 else behavior='%s'  end and case when ''='%s' then 1 else object_name='%s' end"""

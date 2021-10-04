@@ -4391,13 +4391,7 @@ def get_run_task(request):
         return JsonResponse({"message": "ok", "code": 200, "data": data})
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-
-def notify(request):
-    if request.method == "GET":
-        id = request.GET.get("id", "")
-        if Sys_notify.objects.filter(order_id=id,status=1):
-            return JsonResponse({"message": "订单执行完毕", "code": 200})
-        return JsonResponse({"message": "未找到订单", "code": 400})
+def sz_test_notify(request):
     if request.method == "POST":
         state, param = params_check(request.body, ["id"])
         if not state:
@@ -4414,26 +4408,65 @@ def notify(request):
         body = json.dumps(json.loads(request.body)).replace(" ", "")
         url = "/api/notify?" + urls
         data = "POST" + "\n" + url + "\n" + body + "\n"
-        clientSecret = "ethe73nk6nausgk5ngs5qnftdu8d57lmefmfjjp8dcoc22g0kl2"
+        clientSecret = ''.join(MySQLHelper().get_one("""select dict_value from `sys_dict` where dict_type=7"""))
         secret = clientSecret + ":" + data
         sha256 = hashlib.sha256(secret.encode('utf-8')).hexdigest()
         if sha256 == signature:
             Sys_notify.objects.create(create_time=get_time(), update_time=get_time(), is_delete=0,
-                                      status=1, order_id=id, username="admin")
+                                      status=1, desc="sz-test", order_id=id, username="admin")
+            data = {"body": body, "message": "订单执行完毕", "signature": sha256}
+            user_operate("notifytest", "200", id, data)
+            return JsonResponse({"message": "订单执行完毕", "code": 200, "signature": sha256})
+        else:
+            user_operate("notifytest", "400", id, "测试环境签名验证失败")
+            return HttpResponse(status=400)
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
+
+def notify(request):
+    if request.method == "POST":
+        state, param = params_check(request.body, ["id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("id", "")
+        signature = request.GET.get("signature", "")
+        param = json.loads(json.dumps(request.GET))
+        del param["signature"]
+        urls = []
+        for key, value in param.items():
+            u = key + "=" + value + "&"
+            urls.append(u)
+        urls = "".join(urls)[:-1]
+        body = json.dumps(json.loads(request.body)).replace(" ", "")
+        url = "/api/notify?" + urls
+        data = "POST" + "\n" + url + "\n" + body + "\n"
+        clientSecret = ''.join(MySQLHelper().get_one("""select dict_value from `sys_dict` where dict_type=6"""))
+        secret = clientSecret + ":" + data
+        sha256 = hashlib.sha256(secret.encode('utf-8')).hexdigest()
+        if sha256 == signature:
+            Sys_notify.objects.create(create_time=get_time(), update_time=get_time(), is_delete=0,
+                                      status=1, desc="dev", order_id=id, username="admin")
             data = {"body":body, "message":"订单执行完毕", "signature": sha256}
             user_operate("notify", "200", id, data)
             return JsonResponse({"message": "订单执行完毕", "code": 200, "signature": sha256})
         else:
-            user_operate("notify", "400", id, "签名验证失败")
+            user_operate("notify", "400", id, "dev环境签名验证失败")
             return HttpResponse(status=400)
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
 def notifyfail(request):
-    user_operate("notify", "400", "wms-mock接口", "测试所用错误信息：400")
+    user_operate("notify", "400", "wms-mock接口", "dev环境错误信息：400")
+    return HttpResponse(status=400)
+
+def sz_test_fail(request):
+    user_operate("notifytest", "400", "wms-mock接口", "sz-test环境错误信息：400")
     return HttpResponse(status=400)
 
 def notify500(request):
-    user_operate("notify", "500", "wms-mock接口", "测试所用错误信息：500")
+    user_operate("notify", "500", "wms-mock接口", "dev环境错误信息：500")
+    return HttpResponse(status=500)
+
+def sz_test_500(request):
+    user_operate("notifytest", "500", "wms-mock接口", "sz-test环境错误信息：500")
     return HttpResponse(status=500)
 
 def notify_log(request):
@@ -4446,4 +4479,16 @@ def notify_log(request):
         data = convert_data(param_list, param_sql)
         total = len(param_list)
         return JsonResponse({"message": "ok", "code": 200, "total":total, "data": data})
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
+
+def sz_test_log(request):
+    if request.method == "GET":
+        behavior = request.GET.get("status", "")
+        object_name = request.GET.get("id", "")
+        param_sql = ["operate_time", "username", "status", "id", "log"]
+        sql = NOTIFY_SQL_TEST % (behavior, behavior, object_name, object_name)
+        param_list = MySQLHelper().get_all(sql)
+        data = convert_data(param_list, param_sql)
+        total = len(param_list)
+        return JsonResponse({"message": "ok", "code": 200, "total": total, "data": data})
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
