@@ -4406,7 +4406,7 @@ def sz_test_notify(request):
             urls.append(u)
         urls = "".join(urls)[:-1]
         body = json.dumps(json.loads(request.body)).replace(" ", "")
-        url = "/api/notify?" + urls
+        url = "/api/sz_test_notify?" + urls
         data = "POST" + "\n" + url + "\n" + body + "\n"
         clientSecret = ''.join(MySQLHelper().get_one("""select dict_value from `sys_dict` where dict_type=7"""))
         secret = clientSecret + ":" + data
