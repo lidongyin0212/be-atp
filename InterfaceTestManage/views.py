@@ -4454,20 +4454,43 @@ def notify(request):
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
 def notifyfail(request):
-    user_operate("notify", "400", "wms-mock接口", "dev环境错误信息：400")
-    return HttpResponse(status=400)
+    if request.method == "POST":
+        state, param = params_check(request.body, ["id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("id", "")
+        user_operate("notify", "400", id, "dev环境错误信息：400")
+        return HttpResponse(status=400)
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
 def sz_test_fail(request):
-    user_operate("notifytest", "400", "wms-mock接口", "sz-test环境错误信息：400")
-    return HttpResponse(status=400)
+    if request.method == "POST":
+        state, param = params_check(request.body, ["id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("id", "")
+        user_operate("notifytest", "400", id, "sz-test环境错误信息：400")
+        return HttpResponse(status=400)
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
 def notify500(request):
-    user_operate("notify", "500", "wms-mock接口", "dev环境错误信息：500")
-    return HttpResponse(status=500)
+    if request.method == "POST":
+        state, param = params_check(request.body, ["id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("id", "")
+        user_operate("notify", "500", id, "dev环境错误信息：500")
+        return HttpResponse(status=500)
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
 def sz_test_500(request):
-    user_operate("notifytest", "500", "wms-mock接口", "sz-test环境错误信息：500")
-    return HttpResponse(status=500)
+    if request.method == "POST":
+        state, param = params_check(request.body, ["id"])
+        if not state:
+            return JsonResponse({"message": param, "code": 500})
+        id = param.get("id", "")
+        user_operate("notifytest", "500", id, "sz-test环境错误信息：500")
+        return HttpResponse(status=500)
 
 def notify_log(request):
     if request.method == "GET":
