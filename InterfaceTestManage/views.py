@@ -4391,9 +4391,23 @@ def get_run_task(request):
         return JsonResponse({"message": "ok", "code": 200, "data": data})
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-def sz_test_notify(request):
+
+def sz_test_notify(request,scoure=None):
     if request.method == "POST":
-        state, param = params_check(request.body, ["id"])
+        if scoure == "v1":
+            param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
+            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
+            body = json.loads(request.body)
+            if type(body) == list:
+                body = body[0]
+            state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+        elif not scoure:
+            param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
+            items_list = ["name", "barcode", "quantity", "binLocations"]
+            state, param = notify_params_check(request.body, param_list, "items", items_list)
+        else:
+            return HttpResponse(status=404)
         if not state:
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
@@ -4422,9 +4436,22 @@ def sz_test_notify(request):
             return HttpResponse(status=400)
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-def notify(request):
+def notify(request,scoure=None):
     if request.method == "POST":
-        state, param = params_check(request.body, ["id"])
+        if scoure == "v1":
+            param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
+            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
+            body = json.loads(request.body)
+            if type(body) == list:
+                body = body[0]
+            state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+        elif not scoure:
+            param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
+            items_list = ["name", "barcode", "quantity", "binLocations"]
+            state, param = notify_params_check(request.body, param_list, "items", items_list)
+        else:
+            return HttpResponse(status=404)
         if not state:
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
@@ -4453,9 +4480,22 @@ def notify(request):
             return HttpResponse(status=400)
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-def notifyfail(request):
+def notifyfail(request,scoure=None):
     if request.method == "POST":
-        state, param = params_check(request.body, ["id"])
+        if scoure == "v1":
+            param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
+            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
+            body = json.loads(request.body)
+            if type(body) == list:
+                body = body[0]
+            state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+        elif not scoure:
+            param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
+            items_list = ["name", "barcode", "quantity", "binLocations"]
+            state, param = notify_params_check(request.body, param_list, "items", items_list)
+        else:
+            return HttpResponse(status=404)
         if not state:
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
@@ -4463,9 +4503,22 @@ def notifyfail(request):
         return HttpResponse(status=400)
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-def sz_test_fail(request):
+def sz_test_fail(request,scoure=None):
     if request.method == "POST":
-        state, param = params_check(request.body, ["id"])
+        if scoure == "v1":
+            param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
+            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
+            body = json.loads(request.body)
+            if type(body) == list:
+                body = body[0]
+            state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+        elif not scoure:
+            param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
+            items_list = ["name", "barcode", "quantity", "binLocations"]
+            state, param = notify_params_check(request.body, param_list, "items", items_list)
+        else:
+            return HttpResponse(status=404)
         if not state:
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
@@ -4473,9 +4526,22 @@ def sz_test_fail(request):
         return HttpResponse(status=400)
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-def notify500(request):
+def notify500(request,scoure=None):
     if request.method == "POST":
-        state, param = params_check(request.body, ["id"])
+        if scoure == "v1":
+            param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
+            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
+            body = json.loads(request.body)
+            if type(body) == list:
+                body = body[0]
+            state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+        elif not scoure:
+            param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
+            items_list = ["name", "barcode", "quantity", "binLocations"]
+            state, param = notify_params_check(request.body, param_list, "items", items_list)
+        else:
+            return HttpResponse(status=404)
         if not state:
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
@@ -4483,14 +4549,28 @@ def notify500(request):
         return HttpResponse(status=500)
     return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
-def sz_test_500(request):
+def sz_test_500(request,scoure=None):
     if request.method == "POST":
-        state, param = params_check(request.body, ["id"])
+        if scoure == "v1":
+            param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
+            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
+            body = json.loads(request.body)
+            if type(body) == list:
+                body = body[0]
+            state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+        elif not scoure:
+            param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
+            items_list = ["name", "barcode", "quantity", "binLocations"]
+            state, param = notify_params_check(request.body, param_list, "items", items_list)
+        else:
+            return HttpResponse(status=404)
         if not state:
             return JsonResponse({"message": param, "code": 500})
         id = param.get("id", "")
         user_operate("notifytest", "500", id, "sz-test环境错误信息：500")
         return HttpResponse(status=500)
+    return JsonResponse({"message": NOT_METHMOD, "code": 500})
 
 def notify_log(request):
     if request.method == "GET":

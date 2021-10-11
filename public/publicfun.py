@@ -692,6 +692,40 @@ class CJsonEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
+def notify_params_check(body, param_list, lovl2_param=None, lovl2_list=None, lovl3_param=None, lovl3_list=None):
+    try:
+        if body:
+            if type(body) == dict:
+                param = body
+            else:
+                param = json.loads(body)
+        else:
+            param = {}
+    except:
+        # msg = "The parameter is not valid JSON format"
+        msg = "该参数不是有效的JSON格式"
+        return 0, msg
+    if param_list:
+        param_ret, msg = params_secrect(param, param_list)
+        if not param_ret:
+            return 0, msg
+    if lovl2_param:
+        lovl2_param = param[lovl2_param]
+        if type(lovl2_param) == list:
+            lovl2_param = lovl2_param[0]
+        if lovl3_param:
+            lovl3_param = lovl2_param[lovl3_param]
+            if type(lovl3_param) == list:
+                lovl3_param = lovl3_param[0]
+    if lovl2_param and lovl2_list:
+        param_2, msg = params_secrect(lovl2_param, lovl2_list)
+        if not param_2:
+            return 0, msg
+        if lovl3_param and lovl3_list:
+            param_3, msg = params_secrect(lovl3_param, lovl3_list)
+            if not param_3:
+                return 0, msg
+    return 1, param
 
 if __name__ == "__main__":
     pass
