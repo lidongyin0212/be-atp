@@ -4396,7 +4396,7 @@ def sz_test_notify(request,scoure=None):
     if request.method == "POST":
         if scoure == "v1":
             param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
-            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            detail_list = ["containerDetail",  "itemPickTaskDetails"]
             itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
             body = json.loads(request.body)
             if type(body) == list:
@@ -4440,7 +4440,7 @@ def notify(request,scoure=None):
     if request.method == "POST":
         if scoure == "v1":
             param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
-            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            detail_list = ["containerDetail", "itemPickTaskDetails"]
             itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
             body = json.loads(request.body)
             if type(body) == list:
@@ -4484,7 +4484,7 @@ def notifyfail(request,scoure=None):
     if request.method == "POST":
         if scoure == "v1":
             param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
-            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            detail_list = ["containerDetail", "itemPickTaskDetails"]
             itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
             body = json.loads(request.body)
             if type(body) == list:
@@ -4507,7 +4507,7 @@ def sz_test_fail(request,scoure=None):
     if request.method == "POST":
         if scoure == "v1":
             param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
-            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            detail_list = ["containerDetail", "itemPickTaskDetails"]
             itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
             body = json.loads(request.body)
             if type(body) == list:
@@ -4530,7 +4530,7 @@ def notify500(request,scoure=None):
     if request.method == "POST":
         if scoure == "v1":
             param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
-            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            detail_list = ["containerDetail", "itemPickTaskDetails"]
             itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
             body = json.loads(request.body)
             if type(body) == list:
@@ -4553,7 +4553,7 @@ def sz_test_500(request,scoure=None):
     if request.method == "POST":
         if scoure == "v1":
             param_list = ["id", "type", "timestamp", "notifyUrl", "detail"]
-            detail_list = ["containerDetail", "dischargeContainerLocations", "itemPickTaskDetails"]
+            detail_list = ["containerDetail", "itemPickTaskDetails"]
             itemPickTaskDetails_list = ["name", "barcode", "quantity", "binLocation"]
             body = json.loads(request.body)
             if type(body) == list:
