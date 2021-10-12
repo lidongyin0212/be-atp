@@ -4402,10 +4402,12 @@ def sz_test_notify(request,scoure=None):
             if type(body) == list:
                 body = body[0]
             state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+            url = "/api/sz_test_notify/v1?"
         elif not scoure:
             param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
             items_list = ["name", "barcode", "quantity", "binLocations"]
             state, param = notify_params_check(request.body, param_list, "items", items_list)
+            url = "/api/sz_test_notify?"
         else:
             return HttpResponse(status=404)
         if not state:
@@ -4420,7 +4422,7 @@ def sz_test_notify(request,scoure=None):
             urls.append(u)
         urls = "".join(urls)[:-1]
         body = json.dumps(json.loads(request.body)).replace(" ", "")
-        url = "/api/sz_test_notify?" + urls
+        url = url + urls
         data = "POST" + "\n" + url + "\n" + body + "\n"
         clientSecret = ''.join(MySQLHelper().get_one("""select dict_value from `sys_dict` where dict_type=7"""))
         secret = clientSecret + ":" + data
@@ -4446,10 +4448,12 @@ def notify(request,scoure=None):
             if type(body) == list:
                 body = body[0]
             state, param = notify_params_check(body, param_list, "detail", detail_list, "itemPickTaskDetails", itemPickTaskDetails_list)
+            url = "/api/notify/v1?"
         elif not scoure:
             param_list = ["version", "id", "type", "timestamp", "warehouseId", "notifyUrl", "storages", "items"]
             items_list = ["name", "barcode", "quantity", "binLocations"]
             state, param = notify_params_check(request.body, param_list, "items", items_list)
+            url = "/api/notify?"
         else:
             return HttpResponse(status=404)
         if not state:
@@ -4464,7 +4468,7 @@ def notify(request,scoure=None):
             urls.append(u)
         urls = "".join(urls)[:-1]
         body = json.dumps(json.loads(request.body)).replace(" ", "")
-        url = "/api/notify?" + urls
+        url = url + urls
         data = "POST" + "\n" + url + "\n" + body + "\n"
         clientSecret = ''.join(MySQLHelper().get_one("""select dict_value from `sys_dict` where dict_type=6"""))
         secret = clientSecret + ":" + data
