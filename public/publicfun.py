@@ -176,12 +176,16 @@ def convert_params(params, DEPEND_DATA, project_id=0):
                 try:
                     # 自增变量替换
                     param_unit_data = "custom_unit_" + param_unit.group(1)
-                    if param_unit_data not in DEPEND_DATA:
-                        custom_data = convert_customparam(param_unit.group(1), project_id)
-                        DEPEND_DATA[param_unit_data] = custom_data
-                        params = params.replace(result, custom_data)
-                    else:
-                        params = params.replace(result, DEPEND_DATA[param_unit_data])
+                    # if param_unit_data not in DEPEND_DATA:
+                    #     custom_data = convert_customparam(param_unit.group(1), project_id)
+                    #     DEPEND_DATA[param_unit_data] = custom_data
+                    #     params = params.replace(result, custom_data)
+                    # else:
+                    #     params = params.replace(result, DEPEND_DATA[param_unit_data])
+                    custom_data = convert_customparam(param_unit.group(1), project_id)
+                    DEPEND_DATA[param_unit_data] = custom_data
+                    params = params.replace(result, custom_data)
+
                 except Exception as e:
                     print(e)
                     # 提取变量列表
